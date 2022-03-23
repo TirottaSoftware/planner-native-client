@@ -11,23 +11,38 @@ import {
 } from "react-native";
 import React from "react";
 import { Formik } from "formik";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = ({ navigation }) => {
+  const signIn = (values) => {
+    signInWithEmailAndPassword(auth, values.email, values.password)
+      .then((user) => {
+        console.log(user);
+        navigation.navigate("Home");
+      })
+      .catch((err) => {
+        console.log(err.message);
+        return;
+      });
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
         <Image style={styles.logo} source={require("../assets/TP_logo.png")} />
         <Text style={styles.heading}>Log In</Text>
         <Formik
-          initialValues={{ username: "", password: "" }}
-          onSubmit={(values) => console.log(values)}
+          initialValues={{ email: "", password: "" }}
+          onSubmit={(values) => signIn(values)}
         >
           {({ handleChange, handleSubmit, values }) => (
             <View style={styles.form}>
               <TextInput
-                onChangeText={handleChange("username")}
-                placeholder="Username"
-                value={values.username}
+                onChangeText={handleChange("email")}
+                placeholder="Email"
+                textContentType="emailAddress"
+                value={values.email}
                 style={styles.input}
               />
               <TextInput

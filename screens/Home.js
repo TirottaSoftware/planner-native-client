@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, SafeAreaView, Button } from "react-native";
 import React from "react";
+import { auth } from "../firebase";
 
 const Home = () => {
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
+    <SafeAreaView>
+      <Text>Hello, {auth.currentUser.displayName}</Text>
+      <Button onPress={() => auth.signOut()} title="Logout" />
+    </SafeAreaView>
   );
 };
 

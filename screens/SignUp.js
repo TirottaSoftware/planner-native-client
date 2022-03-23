@@ -12,13 +12,15 @@ import {
 import React from "react";
 import { Formik } from "formik";
 import { auth } from "../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const Signup = ({ navigation }) => {
   const createUser = (values) => {
     console.log(values);
     createUserWithEmailAndPassword(auth, values.email, values.password)
       .then((cred) => {
+        updateProfile(cred.user, { displayName: values.username });
+        navigation.navigate("Home");
         console.log(cred);
       })
       .catch((err) => {
@@ -65,7 +67,7 @@ const Signup = ({ navigation }) => {
               <TextInput
                 onChangeText={handleChange("confirmPassword")}
                 placeholder="Confirm Password"
-                textContentType="confirmPassword"
+                textContentType="password"
                 secureTextEntry
                 value={values.confirmPassword}
                 style={styles.input}
@@ -97,7 +99,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    marginTop: 100,
   },
   input: {
     marginVertical: 5,

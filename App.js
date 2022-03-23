@@ -1,14 +1,23 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text, View } from "react-native";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Signup from "./screens/SignUp";
+import { auth } from "./firebase";
 
 export default function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
   const Stack = createNativeStackNavigator();
+
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  });
 
   return (
     <NavigationContainer>
@@ -17,9 +26,16 @@ export default function App() {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Home" component={Home} />
+        {loggedIn ? (
+          <>
+            <Stack.Screen name="Home" component={Home} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Signup" component={Signup} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
