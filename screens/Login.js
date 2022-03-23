@@ -13,6 +13,7 @@ import React from "react";
 import { Formik } from "formik";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import * as yup from "yup";
 
 const Login = ({ navigation }) => {
   const signIn = (values) => {
@@ -27,17 +28,37 @@ const Login = ({ navigation }) => {
       });
   };
 
+  const loginSchema = yup.object().shape({
+    email: yup.string().required("Email is required"),
+    password: yup.string().required("Password is required"),
+  });
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={styles.container}>
         <Image style={styles.logo} source={require("../assets/TP_logo.png")} />
         <Text style={styles.heading}>Log In</Text>
         <Formik
+          validationSchema={loginSchema}
           initialValues={{ email: "", password: "" }}
           onSubmit={(values) => signIn(values)}
         >
-          {({ handleChange, handleSubmit, values }) => (
+          {({ handleChange, handleSubmit, values, errors }) => (
             <View style={styles.form}>
+              {errors.email && (
+                <Text
+                  style={{ fontSize: 16, textAlign: "center", color: "red" }}
+                >
+                  {errors.email}
+                </Text>
+              )}
+              {errors.password && (
+                <Text
+                  style={{ fontSize: 16, textAlign: "center", color: "red" }}
+                >
+                  {errors.password}
+                </Text>
+              )}
               <TextInput
                 onChangeText={handleChange("email")}
                 placeholder="Email"

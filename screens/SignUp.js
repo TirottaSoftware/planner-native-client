@@ -13,8 +13,41 @@ import React from "react";
 import { Formik } from "formik";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import * as yup from "yup";
 
 const Signup = ({ navigation }) => {
+  const signupSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email("Please enter your email.")
+      .required("Email address is required."),
+    username: yup
+      .string()
+      .required("Please enter a valid username")
+      .min(6, () => "Username must be at least 6 characters long."),
+    password: yup
+      .string()
+      // .matches(
+      //   /\w*[a-z]\w*/,
+      //   "Password must contain at least one lower character"
+      // )
+      // .matches(
+      //   /\w*[A-Z]\w*/,
+      //   "Password must contain at least one upper character"
+      // )
+      // .matches(/\d/, "Password must contain a digit")
+      // .matches(
+      //   /[!@#$%^&*()\-_"=+{}; :,<.>]/,
+      //   "Password must contain at least one special character"
+      // )
+      .min(8, ({ min }) => `Password must be at least ${min} characters long`)
+      .required("Password is required"),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("password")], "Passwords do not match")
+      .required("Please confirm your password"),
+  });
+
   const createUser = (values) => {
     console.log(values);
     createUserWithEmailAndPassword(auth, values.email, values.password)
@@ -34,6 +67,7 @@ const Signup = ({ navigation }) => {
         <Image style={styles.logo} source={require("../assets/TP_logo.png")} />
         <Text style={styles.heading}>Sign Up</Text>
         <Formik
+          validationSchema={signupSchema}
           initialValues={{
             username: "",
             email: "",
@@ -42,8 +76,41 @@ const Signup = ({ navigation }) => {
           }}
           onSubmit={(values) => createUser(values)}
         >
-          {({ handleChange, handleSubmit, values }) => (
+          {({ handleChange, handleSubmit, values, errors, isValid }) => (
             <View style={styles.form}>
+              {errors.email && (
+                <Text
+                  style={{ fontSize: 16, textAlign: "center", color: "red" }}
+                >
+                  {errors.email}
+                </Text>
+              )}
+              {errors.password && (
+                <Text
+                  style={{ fontSize: 16, textAlign: "center", color: "red" }}
+                >
+                  {errors.password}
+                </Text>
+              )}
+              {errors.confirmPassword && (
+                <Text
+                  style={{ fontSize: 16, textAlign: "center", color: "red" }}
+                >
+                  {errors.confirmPassword}
+                </Text>
+              )}
+              {errors.username && (
+                <Text
+                  style={{
+                    fontSize: 16,
+                    textAlign: "center",
+                    color: "red",
+                    marginBottom: 10,
+                  }}
+                >
+                  {errors.username}
+                </Text>
+              )}
               <TextInput
                 onChangeText={handleChange("username")}
                 placeholder="Username"
@@ -72,7 +139,11 @@ const Signup = ({ navigation }) => {
                 value={values.confirmPassword}
                 style={styles.input}
               />
-              <Pressable onPress={handleSubmit} style={styles.button}>
+              <Pressable
+                disabled={!isValid}
+                onPress={handleSubmit}
+                style={isValid ? styles.button : styles.disabledButton}
+              >
                 <Text style={styles.buttonText}>Sign Up</Text>
               </Pressable>
 
@@ -113,6 +184,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#198CFF",
     borderRadius: 5,
     marginVertical: 5,
+  },
+  disabledButton: {
+    borderRadius: 5,
+    marginVertical: 5,
+    textAlign: "center",
+    fontSize: 16,
+    color: "white",
+    backgroundColor: "grey",
   },
   buttonText: {
     textAlign: "center",
