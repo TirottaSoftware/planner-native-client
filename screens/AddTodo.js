@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import { Formik } from "formik";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import * as yup from "yup";
 import uuid from "react-native-uuid";
@@ -27,7 +27,7 @@ const AddTodo = ({ navigation }) => {
   };
 
   const addTodo = async (values) => {
-    const todosRef = doc(db, "todos", "userId");
+    const todosRef = doc(db, "todos", auth.currentUser.uid);
 
     const newTodo = {
       task: values.title,

@@ -14,6 +14,9 @@ import { Formik } from "formik";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import * as yup from "yup";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import uuid from "react-native-uuid";
 
 const Signup = ({ navigation }) => {
   const signupSchema = yup.object().shape({
@@ -51,9 +54,21 @@ const Signup = ({ navigation }) => {
   const createUser = (values) => {
     console.log(values);
     createUserWithEmailAndPassword(auth, values.email, values.password)
-      .then((cred) => {
+      .then(async (cred) => {
         updateProfile(cred.user, { displayName: values.username });
         navigation.navigate("Home");
+
+        await setDoc(doc(db, "todos", cred.user.uid), {
+          todos: [
+            {
+              completed: false,
+              deleted: false,
+              id: uuid.v4(),
+              task: "Start Adding Todos",
+              time: new Date(),
+            },
+          ],
+        });
       })
       .catch((err) => {
         console.log(err);

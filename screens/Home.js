@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, where, query } from "firebase/firestore";
 import Todo from "../components/Todo";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -17,13 +17,24 @@ const Home = ({ navigation }) => {
   const [todos, setTodos] = useState([]);
   const isFocused = useIsFocused();
 
-  useEffect(async () => {
-    if (isFocused) {
-      const query = await getDocs(collection(db, "todos"));
-      await query.forEach((doc) => {
-        setTodos(doc.data().todos);
-      });
-    }
+  useEffect(() => {
+    const queryCollection = async () => {
+      if (isFocused) {
+        const todosRef = collection(db, "todos");
+        const q = await query(
+          todosRef,
+          where("__name__", "==", auth.currentUser.uid)
+        );
+        const querySnapshot = await getDocs(q);
+        await querySnapshot.forEach((doc) => {
+          console.log(doc.data().todos);
+          setTodos(doc.data().todos);
+        });
+      }
+    };
+    queryCollection()
+      .then(() => console.log(todos))
+      .catch((err) => console.log(err));
   }, [isFocused]);
 
   return (
