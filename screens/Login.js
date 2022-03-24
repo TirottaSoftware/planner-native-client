@@ -19,7 +19,6 @@ const Login = ({ navigation }) => {
   const signIn = (values) => {
     signInWithEmailAndPassword(auth, values.email, values.password)
       .then((user) => {
-        console.log(user);
         navigation.navigate("Home");
       })
       .catch((err) => {

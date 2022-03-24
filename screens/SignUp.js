@@ -54,7 +54,6 @@ const Signup = ({ navigation }) => {
       .then((cred) => {
         updateProfile(cred.user, { displayName: values.username });
         navigation.navigate("Home");
-        console.log(cred);
       })
       .catch((err) => {
         console.log(err);

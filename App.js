@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Signup from "./screens/SignUp";
 import { auth } from "./firebase";
+import AddTodo from "./screens/AddTodo";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -29,6 +30,7 @@ export default function App() {
         {loggedIn ? (
           <>
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="AddTodo" component={AddTodo} />
           </>
         ) : (
           <>
