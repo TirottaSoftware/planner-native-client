@@ -1,14 +1,19 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
 
-const Todo = ({ todo }) => {
+const Todo = ({ todo, completeTask }) => {
   return (
     <View style={styles.todo}>
       <View style={styles.todoDetails}>
-        <Pressable style={styles.completeButton} />
-        <Text style={styles.task}>
-          {todo.task.toString().slice(0, 15)}
-          {todo.task.toString().length > 15 && `...`}
+        <Pressable
+          style={
+            todo.completed ? styles.solidCompleteButton : styles.completeButton
+          }
+          onPress={completeTask}
+        />
+        <Text style={todo.completed ? styles.completedTask : styles.task}>
+          {todo.task.toString().slice(0, 20)}
+          {todo.task.toString().length > 20 && `...`}
         </Text>
       </View>
       <View style={styles.todoButtons}>
@@ -41,13 +46,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   task: {
-    fontSize: 24,
+    fontSize: 20,
     color: "#707070",
     textAlign: "center",
   },
+  completedTask: {
+    textDecorationLine: "line-through",
+    fontSize: 20,
+    color: "#707070",
+    textAlign: "center",
+  },
+
   completeButton: {
     borderRadius: 20,
     backgroundColor: "white",
+    borderColor: "#198CFF",
+    borderWidth: 1,
+    width: 40,
+    height: 40,
+    marginHorizontal: 20,
+  },
+  solidCompleteButton: {
+    borderRadius: 20,
+    backgroundColor: "#198CFF",
     borderColor: "#198CFF",
     borderWidth: 1,
     width: 40,
