@@ -53,6 +53,15 @@ const Home = ({ navigation }) => {
     }
   };
 
+  const deleteTodo = async (todo) => {
+    console.log(todo);
+    const todosRef = doc(db, "todos", auth.currentUser.uid);
+    await updateDoc(todosRef, {
+      todos: arrayRemove(todo),
+    });
+    queryCollection().catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     queryCollection().catch((err) => console.log(err));
   }, [isFocused]);
@@ -65,6 +74,7 @@ const Home = ({ navigation }) => {
           if (!todo.completed) {
             return (
               <Todo
+                deleteTodo={() => deleteTodo(todo)}
                 completeTask={() => completeTask(todo)}
                 key={todo.id}
                 todo={todo}
@@ -76,6 +86,7 @@ const Home = ({ navigation }) => {
           if (todo.completed) {
             return (
               <Todo
+                deleteTodo={() => deleteTodo(todo)}
                 completeTask={() => completeTask(todo)}
                 key={todo.id}
                 todo={todo}
