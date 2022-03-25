@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
+import { PencilIcon, TrashIcon } from "react-native-heroicons/outline";
 import React from "react";
 
 const Todo = ({ todo, completeTask }) => {
@@ -17,8 +18,16 @@ const Todo = ({ todo, completeTask }) => {
         </Text>
       </View>
       <View style={styles.todoButtons}>
-        <Pressable style={styles.editButton} />
-        <Pressable style={styles.deleteButton} />
+        <Pressable style={styles.editButton}>
+          <Text style={styles.icon}>
+            <PencilIcon color={"white"} />
+          </Text>
+        </Pressable>
+        <Pressable style={styles.deleteButton}>
+          <Text style={styles.icon}>
+            <TrashIcon color={"white"} />
+          </Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -56,7 +65,6 @@ const styles = StyleSheet.create({
     color: "#707070",
     textAlign: "center",
   },
-
   completeButton: {
     borderRadius: 20,
     backgroundColor: "white",
@@ -79,10 +87,20 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     backgroundColor: "#FFD301",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  icon: {
+    fontSize: 24,
   },
   deleteButton: {
     width: 50,
     height: 50,
     backgroundColor: "#EE0000",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

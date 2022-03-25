@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "client",
-    "slug": "client",
+    "name": "tirotta-planner",
+    "slug": "tirotta-planner",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "description": ""
   },
   "name": "client"
 }
