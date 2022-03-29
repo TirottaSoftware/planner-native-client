@@ -15,7 +15,7 @@ import * as yup from "yup";
 
 const EditTodo = ({ route, navigation }) => {
   const { todo } = route.params;
-  const [date, setDate] = useState(new Date(todo.time.seconds * 1000));
+  const [date, setDate] = useState(new Date(todo.time));
 
   const todoSchema = yup.object().shape({
     title: yup.string().required("Please enter a valid title for your task"),
@@ -32,7 +32,7 @@ const EditTodo = ({ route, navigation }) => {
         id: todo.id,
         task: values.title,
         description: values.description,
-        time: date,
+        time: date.toISOString(),
         completed: todo.completed,
         deleted: false,
       },

@@ -32,7 +32,7 @@ const AddTodo = ({ navigation }) => {
     const newTodo = {
       task: values.title,
       description: values.description,
-      time: date,
+      time: date.toISOString(),
       id: uuid.v4(),
       completed: false,
       deleted: false,

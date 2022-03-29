@@ -128,7 +128,9 @@ const Home = ({ route, navigation }) => {
           if (todo.completed) {
             return (
               <Todo
-                editTodo={() =>
+                editTodo={() => {
+                  setEditTodo(todo);
+
                   navigation.push("EditTodo", {
                     todo: {
                       id: todo.id,
@@ -137,8 +139,8 @@ const Home = ({ route, navigation }) => {
                       time: todo.time,
                       completed: todo.completed,
                     },
-                  })
-                }
+                  });
+                }}
                 deleteTodo={() => deleteTodo(todo)}
                 completeTask={() => completeTask(todo)}
                 key={todo.id}
