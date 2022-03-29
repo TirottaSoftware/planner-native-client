@@ -7,6 +7,7 @@ import Login from "./screens/Login";
 import Signup from "./screens/SignUp";
 import { auth } from "./firebase";
 import AddTodo from "./screens/AddTodo";
+import EditTodo from "./screens/EditTodo";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -31,6 +32,7 @@ export default function App() {
           <>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddTodo" component={AddTodo} />
+            <Stack.Screen name="EditTodo" component={EditTodo} />
           </>
         ) : (
           <>

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import { PencilIcon, TrashIcon } from "react-native-heroicons/outline";
 import React from "react";
 
-const Todo = ({ todo, completeTask, deleteTodo }) => {
+const Todo = ({ todo, completeTask, deleteTodo, editTodo }) => {
   return (
     <View style={styles.todo}>
       <View style={styles.todoDetails}>
@@ -18,7 +18,7 @@ const Todo = ({ todo, completeTask, deleteTodo }) => {
         </Text>
       </View>
       <View style={styles.todoButtons}>
-        <Pressable style={styles.editButton}>
+        <Pressable onPress={editTodo} style={styles.editButton}>
           <Text style={styles.icon}>
             <PencilIcon color={"white"} />
           </Text>
